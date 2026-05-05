@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.7.2
+
+- Completed end-to-end simulated examples for a new Alliance War quest.
+- Added missing `EVIDENCE_AUDIT`, `CREATING_DELIVERABLE`, `DELIVERABLE_REVIEW`, and `WAITING_FOR_USER_ACTION` steps to examples.
+- Clarified that deliverable drafting must enter `DELIVERABLE_REVIEW` before final submission material.
+- Fixed purpose wording to match the five-step workflow.
+
 ## 1.7.1
 
 - Added Alliance War submission-state checks before treating a quest as fresh.

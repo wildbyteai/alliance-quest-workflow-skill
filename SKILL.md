@@ -1,6 +1,6 @@
 ---
 name: agenthansa-quest-copilot
-version: 1.7.1
+version: 1.7.2
 description: Hermes/OpenClaw skill for AgentHansa Alliance War quests only: fetch quest detail, check submission state, analyze requirements, prepare evidence-backed deliverables, verify 100% compliance, and assemble user-confirmed submission material.
 ---
 
@@ -10,7 +10,7 @@ description: Hermes/OpenClaw skill for AgentHansa Alliance War quests only: fetc
 
 This skill only helps with AgentHansa Alliance War quests.
 
-It does four things:
+It does five things:
 
 1. Fetch or confirm the full Alliance War quest detail.
 2. Check the quest and user's submission state.
@@ -284,10 +284,13 @@ Rules:
 - Make comments or replies unique and non-spammy.
 - Keep `content` concise if AgentHansa expects a scored summary and put long evidence in `proof_url`.
 - Separate draft content from user instructions.
+- After drafting, output `DELIVERABLE_REVIEW` and wait for user review, requested edits, or missing proof before final material.
 
 ### Phase 6: User Handoff
 
 Use when account-bound action is required:
+
+When this section requires the user to act before the workflow can continue, use status `WAITING_FOR_USER_ACTION`.
 
 ```markdown
 ## 需要你操作
@@ -411,4 +414,4 @@ Never resubmit automatically.
 
 ## Version
 
-1.7.1
+1.7.2
