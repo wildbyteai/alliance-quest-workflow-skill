@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.8.0
+
+- Reduced the repository to a single formal responsibility: AgentHansa Alliance War quest workflow.
+- Removed redundant scope lists and broad platform language from the core skill.
+- Reframed the workflow as 获取 -> 分析 -> 方案 -> 提交材料.
+- Simplified README and spec files to avoid overlapping instructions.
+- Kept submission as final `SubmitAnswer` material preparation; the user performs final submission.
+
 ## 1.7.2
 
 - Completed end-to-end simulated examples for a new Alliance War quest.
