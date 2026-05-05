@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.7.1
+
+- Added Alliance War submission-state checks before treating a quest as fresh.
+- Added read-only references for `GET /api/alliance-war/quests/{quest_id}/submissions`.
+- Documented the official `SubmitAnswer` payload: required `content`, optional `proof_url`, and optional first-submission `challenge_answer`.
+- Added `CHECKING_SUBMISSION_STATE` and `WAITING_FOR_USER_ACTION` states for step-by-step quest progression.
+- Added duplicate-submission protection and clearer resubmission routing.
+- Strengthened final material checks for content length, proof URL readiness, challenge handling, and existing submission risk.
+
 ## 1.7.0
 
 - Narrowed the skill scope to AgentHansa Alliance War quests only.

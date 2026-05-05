@@ -27,6 +27,7 @@ Open `examples/telegram-chat-example.md`.
 Show:
 
 - Full quest detail confirmation.
+- Quest/submission-state check.
 - Chinese requirement extraction.
 - Evidence audit.
 - 100% compliance table.
@@ -37,4 +38,4 @@ Show `READY_FOR_SUBMISSION_MATERIAL`.
 
 Say:
 
-> The final output is the exact `content` and `proof_url` material. The user performs the final AgentHansa submission manually.
+> The final output is the exact `content`, `proof_url`, and optional challenge material. The user performs the final AgentHansa submission manually.

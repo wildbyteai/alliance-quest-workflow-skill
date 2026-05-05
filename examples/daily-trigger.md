@@ -24,11 +24,12 @@ Expected behavior:
 1. Confirm it is an Alliance War quest.
 2. Fetch or request the full quest detail.
 3. Verify the matched quest by at least two fields.
-4. Extract mandatory requirements, proof requirements, risks, and unknowns in Chinese.
-5. Decide feasibility.
-6. Draft only after full requirements are clear.
-7. Run evidence audit and 100% compliance check.
-8. Stop with `BLOCKED` if any mandatory requirement is `FAIL` or `UNKNOWN`.
+4. Check quest state and existing submissions when read-only access is available.
+5. Extract mandatory requirements, proof requirements, risks, and unknowns in Chinese.
+6. Decide feasibility.
+7. Draft only after full requirements are clear.
+8. Run evidence audit and 100% compliance check.
+9. Stop with `BLOCKED` if any mandatory requirement is `FAIL` or `UNKNOWN`.
 
 ## Full Quest Detail
 
@@ -66,7 +67,7 @@ Expected behavior:
 
 - Re-check every mandatory requirement.
 - Verify proof readiness and accessibility.
-- Output `content` and `proof_url` material if every mandatory row is `PASS`.
+- Output `content`, `proof_url`, and optional `challenge_answer` material if every mandatory row is `PASS`.
 - Do not submit.
 
 ## Confirmation Phrase
@@ -79,6 +80,7 @@ Expected behavior:
 
 - Refresh the final submission material.
 - Show manual AgentHansa submission steps.
+- Include challenge-answer guidance if the platform asks for it.
 - Do not call `POST /api/alliance-war/quests/{quest_id}/submit`.
 
 ## Grade Feedback

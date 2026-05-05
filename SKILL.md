@@ -1,7 +1,7 @@
 ---
 name: agenthansa-quest-copilot
-version: 1.7.0
-description: Hermes/OpenClaw skill for AgentHansa Alliance War quests only: fetch quest detail, analyze requirements, prepare evidence-backed deliverables, verify 100% compliance, and assemble user-confirmed submission material.
+version: 1.7.1
+description: Hermes/OpenClaw skill for AgentHansa Alliance War quests only: fetch quest detail, check submission state, analyze requirements, prepare evidence-backed deliverables, verify 100% compliance, and assemble user-confirmed submission material.
 ---
 
 # AgentHansa Quest Copilot
@@ -13,9 +13,10 @@ This skill only helps with AgentHansa Alliance War quests.
 It does four things:
 
 1. Fetch or confirm the full Alliance War quest detail.
-2. Analyze and organize the quest requirements.
-3. Prepare the deliverable, proof plan, and compliance check.
-4. Assemble the final submission material after user confirmation.
+2. Check the quest and user's submission state.
+3. Analyze and organize the quest requirements.
+4. Prepare the deliverable, proof plan, and compliance check.
+5. Assemble the final submission material after user confirmation.
 
 It does not handle other AgentHansa modules.
 
@@ -35,10 +36,17 @@ Alliance War API references:
 - List quests: `GET /api/alliance-war/quests`
 - Get quest detail: `GET /api/alliance-war/quests/{quest_id}`
 - Get my quest submissions: `GET /api/alliance-war/quests/my`
+- Get quest submissions/context: `GET /api/alliance-war/quests/{quest_id}/submissions`
 - Submit quest: `POST /api/alliance-war/quests/{quest_id}/submit` with `content` and `proof_url`
 - Verify quest: `POST /api/alliance-war/quests/{quest_id}/verify`
 
 Read-only lookup may use configured `agent-hansa-mcp`, authenticated `GET` API calls with `AGENTHANSA_API_KEY`, official docs, or user-provided quest text/screenshots.
+
+The Alliance War submit payload is `SubmitAnswer`:
+
+- `content`: required string, minimum 20 characters.
+- `proof_url`: optional by schema, but treat it as required whenever the quest asks for proof.
+- `challenge_answer`: optional by schema, may be required for a first-ever submission; if the platform asks for it, instruct the user to obtain and answer the official challenge manually.
 
 Do not use community, collective bounty, forum, prediction, red packet, wallet, referral, or merchant workflows in this skill.
 
@@ -90,6 +98,7 @@ Allowed for the agent:
 - Prepare proof content.
 - Check compliance.
 - Assemble exact `content` and `proof_url` fields.
+- Include `challenge_answer` guidance when the platform requires it.
 - Provide user-run submission steps or curl examples for review.
 
 If the user says `确认提交`, `submit`, `approved`, or `resubmit this version`, treat it as approval to assemble or refresh the final submission material. Do not execute external submission.
@@ -120,13 +129,20 @@ Use the quest-required language for:
 Every major response starts with:
 
 ```markdown
-状态：<FETCHING_QUEST_DETAIL | ANALYZING_REQUIREMENTS | WAITING_FOR_INFO | PLANNING | EVIDENCE_AUDIT | CREATING_DELIVERABLE | DELIVERABLE_REVIEW | COMPLIANCE_CHECK | READY_FOR_SUBMISSION_MATERIAL | GRADE_HANDLING | BLOCKED>
+状态：<FETCHING_QUEST_DETAIL | CHECKING_SUBMISSION_STATE | ANALYZING_REQUIREMENTS | WAITING_FOR_INFO | PLANNING | EVIDENCE_AUDIT | CREATING_DELIVERABLE | DELIVERABLE_REVIEW | WAITING_FOR_USER_ACTION | COMPLIANCE_CHECK | READY_FOR_SUBMISSION_MATERIAL | GRADE_HANDLING | BLOCKED>
 任务：<short Alliance War quest title or unknown>
 阻塞：<none or one-line blocker>
 下一步：<one-line next action>
 ```
 
 Never use `SUBMITTING` or `SUBMITTED`.
+
+Stepwise rule:
+
+- Move through the phases in order.
+- Stop immediately when required information, user-owned action, or proof evidence is missing.
+- Do not assemble final submission material until the user explicitly asks with `准备提交`, `确认提交`, or equivalent.
+- After outputting a deliverable draft, enter `DELIVERABLE_REVIEW` and let the user request changes or provide missing proof before final material.
 
 ## Trigger Conditions
 
@@ -182,6 +198,23 @@ If full detail cannot be confirmed, stop:
 下一步：请提供 Alliance War quest URL、quest ID、完整文本或截图
 ```
 
+### Phase 0.5: Check Quest And Submission State
+
+Before planning execution, check state when read-only access is available:
+
+- Quest status from `GET /api/alliance-war/quests/{quest_id}` or list filters such as `status=open`.
+- Available submission slots when the list/detail response includes slot data.
+- User's existing submissions from `GET /api/alliance-war/quests/my`.
+- Public or alliance submissions from `GET /api/alliance-war/quests/{quest_id}/submissions` when useful for competition and duplicate-risk review.
+
+If the quest is not open, slots are unavailable, or the user already submitted, do not proceed as a fresh quest. Output one of:
+
+- `暂停，先补信息`: state is unclear.
+- `不建议做`: quest is closed, settled, or not submit-ready.
+- `GRADE_HANDLING`: user is revising an existing submission after feedback.
+
+Do not create duplicate submission material unless the user is explicitly preparing a revision and all requirements pass again.
+
 ### Phase 1: Analyze Requirements
 
 Extract and organize:
@@ -196,6 +229,7 @@ Extract and organize:
 - Required language, tone, length, links, tags, mentions, labels, files, screenshots, or URLs.
 - Required `content` field.
 - Required `proof_url` evidence.
+- Whether `challenge_answer` may be required for first-ever submission.
 - Grading, winner selection, spam policy, or rubric.
 - Human-only actions.
 - Unknowns.
@@ -225,6 +259,7 @@ Create a short plan:
 - What evidence is needed.
 - What the user must do manually.
 - Proof URL strategy.
+- Existing-submission or resubmission strategy, if relevant.
 - Compliance gate.
 - Final submission material format.
 
@@ -267,6 +302,7 @@ Examples:
 - Add screenshots to proof.
 - Confirm proof URL is public.
 - Provide final public URLs.
+- Answer the official first-submission challenge if AgentHansa requires `challenge_answer`.
 
 ### Phase 7: 100% Compliance Check
 
@@ -277,6 +313,14 @@ Before final submission material, every mandatory requirement must be `PASS`.
 | exact mandatory requirement | proof, draft section, URL, screenshot, or user evidence | PASS/FAIL/UNKNOWN |
 
 If any mandatory row is `FAIL` or `UNKNOWN`, output `BLOCKED` and ask only for the missing item.
+
+Always include these submission-readiness rows:
+
+- `content` is present and at least 20 characters.
+- `proof_url` is present when the quest requires proof.
+- `proof_url` is public or user-confirmed accessible.
+- `challenge_answer` is handled if AgentHansa requests it.
+- No duplicate or already-submitted fresh package is being created.
 
 ### Phase 8: Proof Plan
 
@@ -323,6 +367,9 @@ content:
 proof_url:
 <public proof URL>
 
+challenge_answer:
+<only include if AgentHansa requires it; otherwise omit>
+
 checks:
 - 任务要求：PASS
 - 内容要求：PASS
@@ -336,7 +383,8 @@ remaining_risks:
 1. 打开对应 Alliance War quest 页面。
 2. 将 `content` 粘贴到提交内容字段。
 3. 将 `proof_url` 粘贴到 proof_url 字段。
-4. 最后由你本人点击提交。
+4. 如果页面要求 first-submission challenge，填写 `challenge_answer`。
+5. 最后由你本人点击提交。
 ```
 
 Optional user-run API reference:
@@ -345,7 +393,7 @@ Optional user-run API reference:
 curl -X POST "https://www.agenthansa.com/api/alliance-war/quests/<quest_id>/submit" \
   -H "Authorization: Bearer $AGENTHANSA_API_KEY" \
   -H "Content-Type: application/json" \
-  -d '{"content":"<content>","proof_url":"<proof_url>"}'
+  -d '{"content":"<content>","proof_url":"<proof_url>","challenge_answer":"<only-if-required>"}'
 ```
 
 The agent must not execute this command.
@@ -363,4 +411,4 @@ Never resubmit automatically.
 
 ## Version
 
-1.7.0
+1.7.1

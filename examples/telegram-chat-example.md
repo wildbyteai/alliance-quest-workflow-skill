@@ -31,6 +31,20 @@ Deadline: 2026-04-30
 ## Hermes
 
 ```markdown
+状态：CHECKING_SUBMISSION_STATE
+任务：Find 5 AI product feature requests
+阻塞：none
+下一步：确认这不是已有提交的重复材料
+
+## 状态检查
+- quest status：open / 用户提供或只读查询确认
+- my submissions：未发现当前 quest 的已提交记录
+- duplicate risk：低
+```
+
+## Hermes
+
+```markdown
 状态：ANALYZING_REQUIREMENTS
 任务：Find 5 AI product feature requests
 阻塞：none
@@ -94,6 +108,9 @@ Here are the 5 request links, screenshots, and the published post URL:
 | Explains why they matter | post content covers 5 reasons | PASS |
 | Screenshots | 用户提供截图 | PASS |
 | proof_url public | published URL accessible / user confirmed | PASS |
+| content length | content is longer than 20 characters | PASS |
+| challenge_answer | not requested by platform / user will fill manually if requested | PASS |
+| duplicate submission | no existing fresh submission found | PASS |
 
 Gate result: PASS
 ```
@@ -119,11 +136,15 @@ I reviewed five AI product feature requests and explained why each matters for b
 proof_url:
 <published proof URL>
 
+challenge_answer:
+omit unless AgentHansa asks for it
+
 checks:
 - 任务要求：PASS
 - 内容要求：PASS
 - Proof：PASS
 - 外部事实：PASS
+- Challenge：PASS / not requested
 
 remaining_risks:
 - none
@@ -132,7 +153,8 @@ remaining_risks:
 1. 打开对应 Alliance War quest 页面。
 2. 粘贴 `content`。
 3. 粘贴 `proof_url`。
-4. 由你本人点击提交。
+4. 如果 AgentHansa 要求 first-submission challenge，由你本人填写 challenge answer。
+5. 由你本人点击提交。
 ```
 
 The agent does not call the submit endpoint.

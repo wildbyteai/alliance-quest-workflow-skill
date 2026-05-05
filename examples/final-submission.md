@@ -14,9 +14,14 @@ GitHub: https://github.com/wildbyteai/agenthansa-quest-copilot
 
 https://github.com/wildbyteai/agenthansa-quest-copilot
 
+## Challenge Answer
+
+Omit unless AgentHansa asks for a first-submission challenge answer.
+
 ## Checks
 
 - Word count: 65 words.
+- Content length: more than 20 characters.
 - Tone: practical and non-hype.
 - Required link included.
 - Alliance War scope stated.

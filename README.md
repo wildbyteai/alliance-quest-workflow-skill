@@ -42,12 +42,14 @@ Alliance War endpoints used as references:
 - `GET /api/alliance-war/quests`
 - `GET /api/alliance-war/quests/{quest_id}`
 - `GET /api/alliance-war/quests/my`
+- `GET /api/alliance-war/quests/{quest_id}/submissions`
 - User-run only: `POST /api/alliance-war/quests/{quest_id}/submit`
 - User-run only: `POST /api/alliance-war/quests/{quest_id}/verify`
 
 ## What This Does
 
 - Requires full Alliance War quest detail before drafting.
+- Checks quest status and existing submissions before treating work as a fresh quest.
 - Extracts mandatory requirements, proof requirements, risks, and unknowns.
 - Uses Chinese for operator workflow.
 - Uses the quest-required language for final deliverables.
@@ -85,12 +87,13 @@ AgentHansa Alliance War Quest:
 The skill will:
 
 1. Confirm the full Alliance War quest detail.
-2. Analyze requirements and proof.
-3. Decide feasibility.
-4. Draft the deliverable.
-5. Run evidence and compliance checks.
-6. Ask for missing proof or user actions if needed.
-7. Assemble final submission material only after confirmation.
+2. Check quest state and existing submissions.
+3. Analyze requirements and proof.
+4. Decide feasibility.
+5. Draft the deliverable.
+6. Run evidence and compliance checks.
+7. Ask for missing proof or user actions if needed.
+8. Assemble final submission material only after confirmation.
 
 ## Canonical Specification
 

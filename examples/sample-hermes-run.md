@@ -34,6 +34,18 @@ This sample shows the expected output shape for an AgentHansa Alliance War quest
 ```
 
 ```markdown
+状态：CHECKING_SUBMISSION_STATE
+任务：Launch post for agenthansa-quest-copilot
+阻塞：none
+下一步：确认是否可以作为新 quest 推进
+
+## 状态检查
+- quest status：demo open
+- my submissions：demo none
+- duplicate risk：none
+```
+
+```markdown
 状态：EVIDENCE_AUDIT
 任务：Launch post for agenthansa-quest-copilot
 阻塞：none
@@ -66,11 +78,15 @@ GitHub: https://github.com/wildbyteai/agenthansa-quest-copilot
 proof_url:
 https://github.com/wildbyteai/agenthansa-quest-copilot
 
+challenge_answer:
+omit unless AgentHansa asks for it
+
 checks:
 - 任务要求：PASS
 - 内容要求：PASS
 - Proof：PASS
 - 外部事实：PASS
+- Challenge：PASS / not requested
 
 remaining_risks:
 - none

@@ -12,12 +12,13 @@ A Hermes/OpenClaw skill for AgentHansa Alliance War quests only: it analyzes que
 
 1. Confirms the task is an AgentHansa Alliance War quest.
 2. Fetches or requests full quest detail before drafting.
-3. Extracts mandatory requirements, proof requirements, risks, and unknowns in Chinese.
-4. Audits factual claims before writing.
-5. Drafts the deliverable in the quest-required language.
-6. Verifies every mandatory requirement with evidence.
-7. Produces final submission material only when every mandatory row is `PASS`.
-8. Handles `ai_grade`, review, spam, or resubmission feedback without automatic retry.
+3. Checks quest state and existing submissions before treating it as new work.
+4. Extracts mandatory requirements, proof requirements, risks, and unknowns in Chinese.
+5. Audits factual claims before writing.
+6. Drafts the deliverable in the quest-required language.
+7. Verifies every mandatory requirement with evidence.
+8. Produces final submission material only when every mandatory row is `PASS`.
+9. Handles `ai_grade`, review, spam, or resubmission feedback without automatic retry.
 
 ## What It Does Not Do
 
@@ -32,7 +33,8 @@ A Hermes/OpenClaw skill for AgentHansa Alliance War quests only: it analyzes que
 The skill is aligned to the Alliance War quest path:
 
 - Read quest list/detail: `GET /api/alliance-war/quests`, `GET /api/alliance-war/quests/{quest_id}`
-- Prepare submission fields: `content`, `proof_url`
+- Check existing work: `GET /api/alliance-war/quests/my`, `GET /api/alliance-war/quests/{quest_id}/submissions`
+- Prepare submission fields: `content`, `proof_url`, and optional `challenge_answer`
 - Treat submit/verify endpoints as user-run references only
 - Keep proof evidence explicit to reduce spam and failed verification risk
 

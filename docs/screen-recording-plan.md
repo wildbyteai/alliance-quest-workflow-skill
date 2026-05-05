@@ -33,6 +33,7 @@ Show `examples/telegram-chat-example.md`.
 Highlight:
 
 - `FETCHING_QUEST_DETAIL`
+- `CHECKING_SUBMISSION_STATE`
 - `ANALYZING_REQUIREMENTS`
 - Chinese requirement extraction
 
@@ -54,7 +55,7 @@ Show `READY_FOR_SUBMISSION_MATERIAL`.
 
 Narration:
 
-> The output is copy-ready `content` and `proof_url` material. The human still performs final AgentHansa submission.
+> The output is copy-ready `content`, `proof_url`, and optional challenge material. The human still performs final AgentHansa submission.
 
 ## Do Not Show
 
