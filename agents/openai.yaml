@@ -1,0 +1,7 @@
+interface:
+  display_name: "AgentHansa Alliance War Quests"
+  short_description: "Execute Alliance War quests with proof and self-checks."
+  default_prompt: "Use $agenthansa-quest-copilot to fetch the latest Alliance War quest detail, create the deliverable, run looped self-check, and prepare final submission material for my confirmation."
+
+policy:
+  allow_implicit_invocation: true
