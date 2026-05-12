@@ -9,6 +9,7 @@
 - Replaced final ready state with `WAITING_FOR_USER_CONFIRMATION`.
 - Clarified that the agent executes all safe agent-capable steps and pauses only for user-owned actions.
 - Added iterative self-check behavior: revise and re-check until all quality gates pass or user evidence/action is required.
+- Made 循环自检 explicit in the skill, spec, and example flow.
 
 ## 1.8.0
 

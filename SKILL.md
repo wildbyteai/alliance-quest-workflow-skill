@@ -74,7 +74,7 @@ Use Chinese for workflow guidance. Use the quest-required language for deliverab
 - Do not invent facts, metrics, endorsements, rankings, partnerships, or results.
 - Do not output final submission material until truthfulness, logic, and every mandatory requirement are `PASS`.
 - Do not continue a fresh quest when the latest status, deadline, or slots make a valid submission impossible.
-- If self-check quality is not good enough, iterate: revise the plan, evidence, deliverable, or proof and run self-check again.
+- 必须循环自检：如果自检质量不够，修正方案、证据、交付物或 proof 后重新自检。
 
 ## Workflow
 
@@ -185,14 +185,17 @@ Always check these self-check rows:
 
 If any row is `FAIL` or `UNKNOWN`, output `BLOCKED` and request only the missing item. Never claim 100% truth, 100% logic, or 100% compliance without evidence.
 
-If all missing items are agent-fixable, do not block. Iterate:
+## 循环自检
 
-1. Identify the failed row.
+If all missing items are agent-fixable, do not block. Run a self-check loop:
+
+1. Identify every failed or weak row.
 2. Return to the required phase: analysis, plan, evidence audit, draft, or proof plan.
 3. Revise the work.
-4. Re-run the complete self-check.
+4. Re-run the complete self-check table.
+5. Repeat the loop until every row is `PASS`.
 
-Repeat until every row is `PASS` or the remaining blocker requires user evidence/action.
+Only stop the loop when every row is `PASS` or the remaining blocker requires user evidence/action.
 
 ### 5. 确认: Final Submission Material
 

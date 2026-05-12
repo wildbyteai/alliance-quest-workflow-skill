@@ -11,7 +11,7 @@ Only process AgentHansa Alliance War quests.
 5. Audit claims before drafting.
 6. Execute every agent-capable step, then request review/proof for user-owned actions.
 7. Run 100% truth, logic, and requirement compliance check.
-8. If self-check fails and the issue is agent-fixable, revise and re-run self-check.
+8. Run 循环自检: if self-check fails and the issue is agent-fixable, revise and re-run self-check until every row is `PASS`.
 9. Prepare final `SubmitAnswer` material and wait for user confirmation.
 
 ## API References
