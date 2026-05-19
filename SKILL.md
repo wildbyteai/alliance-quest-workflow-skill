@@ -69,8 +69,7 @@ Use the user's language for workflow guidance. Use the quest-required language f
 - Do not call submit or verify endpoints. Prepare final material and wait for user confirmation; final submission or verification must be performed by the user or host system outside this skill.
 - Do not click final buttons or mutate external platforms.
 - Do not create duplicate fresh submission material when an existing submission is detected.
-- Do not invent facts, metrics, endorsements, rankings, partnerships, proof, URLs, screenshots, or results.
-- Do not output final submission material until truthfulness, logic, proof readiness, and every mandatory requirement are `PASS`.
+- Do not output final submission material until all self-check rows are `PASS`.
 - Do not continue a fresh quest when the latest status, deadline, or slots make valid submission impossible.
 
 ## Quality Gate
@@ -79,10 +78,19 @@ Before final material, ensure the quest work is not merely complete but high qua
 
 - The deliverable directly answers the quest objective and grading rubric.
 - The content is specific to the product, sponsor, platform, audience, and requested format.
-- Every factual claim is either supported, removed, or clearly marked as an assumption for user confirmation.
+- Every factual claim is supported by quest text, official source, or user evidence (see Anti-Patterns for concrete failure examples).
 - The proof plan is realistic and points to verifiable public or user-confirmed evidence.
-- The result is not generic filler, spam-like, overclaimed, or mismatched to the required platform.
 - The final payload is concise, complete, and ready for review without hidden dependencies.
+
+## Anti-Patterns
+
+Common LLM failures to avoid:
+
+- **Unverifiable claims**: "This will 10x your conversion rate" / "Trusted by 10,000+ companies" — every number needs a source.
+- **Promotional tone**: Writing content that reads like an ad rather than a deliverable.
+- **Copying quest description**: Paraphrasing the quest requirements back as the content instead of producing the actual deliverable.
+- **Meta-commentary**: "I will now submit this to the API" / "Here is my submission" — the content field should be the deliverable itself, not commentary about it.
+- **Placeholder leakage**: Leaving `[Your Name]`, `[TODO]`, `[INSERT]` in the final content.
 
 ## Workflow
 
@@ -145,6 +153,14 @@ Before drafting, run an evidence audit:
 |---|---|---|
 | factual claim | quest text / official source / user evidence | keep/remove |
 
+Example:
+
+| Claim | Evidence | Decision |
+|---|---|---|
+| "ProductX reduces build time by 40%" | no source provided | remove — unverifiable |
+| "ProductX auto-detects build failures" | official product docs | keep |
+| "Setup took 15 minutes" | user tested | keep — mark as user experience |
+
 Draft only from supported claims. Execute every agent-capable step safely: research, outlining, writing, formatting, source checks, proof document planning, and payload assembly. Do not stop at analysis if the next step is agent-capable.
 
 When user-owned action is required, output `WAITING_FOR_USER_ACTION`:
@@ -166,7 +182,7 @@ Before final submission material, run this table:
 | Truthfulness | every factual claim is supported by quest text, official source, or user evidence | PASS/FAIL/UNKNOWN |
 | Logic | structure and reasoning are coherent and non-contradictory | PASS/FAIL/UNKNOWN |
 | Explicit requirements | every mandatory quest requirement is satisfied | PASS/FAIL/UNKNOWN |
-| Content field | `content` exists and is at least 20 characters | PASS/FAIL/UNKNOWN |
+| Content field | `content` is 20+ chars, no placeholders, no API call references, evidence-backed | PASS/FAIL/UNKNOWN |
 | Proof | required `proof_url` exists and is public or user-confirmed accessible | PASS/FAIL/UNKNOWN |
 | Challenge answer | `challenge_answer` is handled only if required | PASS/FAIL/UNKNOWN |
 | Duplicate risk | no duplicate fresh submission is being prepared | PASS/FAIL/UNKNOWN |
@@ -213,6 +229,18 @@ checks:
 remaining_risks:
 - none / list
 ```
+
+## Examples
+
+Quest: "Write a 200-word review of ProductX for DevTo"
+
+**Good content** (specific, evidence-based, honest about limitations):
+> ProductX streamlines CI/CD pipelines by auto-detecting build failures and suggesting fixes. In testing across 3 Node.js projects, it reduced debug time by roughly 40% compared to manual log scanning. The dashboard surfaces flaky tests clearly — something GitHub Actions still struggles with. Two caveats: the free tier limits to 50 builds/month, and the YAML config syntax differs from standard GitHub Actions, requiring a one-time migration. For teams drowning in CI noise, it's worth evaluating on a non-critical project first. Setup took about 15 minutes on an existing repo.
+
+**Bad content** (generic, unverifiable, promotional):
+> ProductX is an amazing tool that will revolutionize your development workflow! It is the best CI/CD solution on the market, trusted by thousands of developers worldwide. With its cutting-edge AI technology, ProductX automatically detects and fixes all your build issues, saving you countless hours. I highly recommend ProductX to every developer who wants to 10x their productivity.
+
+The difference: good content has specific claims with evidence ("3 Node.js projects", "40%", "15 minutes") and honest caveats. Bad content has superlatives ("amazing", "revolutionize", "best") with zero evidence.
 
 ## Feedback Handling
 
